@@ -3,6 +3,20 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getVendorById, getReviewsByVendor, createReview, type Vendor, type Review } from '@/lib/supabase'
 
+const categoryKeywords: Record<string, string> = {
+  venues: 'wedding,banquet,hall',
+  catering: 'wedding,food,catering',
+  photography: 'wedding,photography,couple',
+  decoration: 'wedding,decoration,flowers',
+  entertainment: 'wedding,music,dance',
+}
+
+function vendorImage(id: string, cat: string, index = 0) {
+  const keyword = categoryKeywords[cat] || 'wedding'
+  const lock = id.split('').reduce((acc, c, i) => acc + c.charCodeAt(0) * (i + 1), index * 100) % 10000
+  return `https://loremflickr.com/${index === 0 ? '800/500' : '400/300'}/${keyword}?lock=${lock}`
+}
+
 export default function VendorDetail({ params }: { params: { id: string } }) {
   const [vendor, setVendor] = useState<Vendor | null>(null)
   const [reviews, setReviews] = useState<Review[]>([])
@@ -124,7 +138,7 @@ export default function VendorDetail({ params }: { params: { id: string } }) {
         {/* Gallery */}
         <div className="col-span-2">
           <img
-            src={`https://picsum.photos/seed/${params.id}-0/800/500`}
+            src={vendorImage(params.id, category, 0)}
             alt={name}
             className="w-full h-80 rounded-2xl object-cover mb-3"
           />
@@ -132,7 +146,7 @@ export default function VendorDetail({ params }: { params: { id: string } }) {
             {[1, 2, 3, 4].map(i => (
               <img
                 key={i}
-                src={`https://picsum.photos/seed/${params.id}-${i}/400/300`}
+                src={vendorImage(params.id, category, i)}
                 alt=""
                 className="h-20 w-full rounded-xl object-cover"
               />

@@ -13,8 +13,19 @@ const cities = [
 ]
 const categories = ['venues', 'catering', 'photography', 'decoration', 'entertainment']
 
-function vendorImage(id: string, index = 0) {
-  return `https://picsum.photos/seed/${id}-${index}/400/300`
+const categoryKeywords: Record<string, string> = {
+  venues: 'wedding,banquet,hall',
+  catering: 'wedding,food,catering',
+  photography: 'wedding,photography,couple',
+  decoration: 'wedding,decoration,flowers',
+  entertainment: 'wedding,music,dance',
+}
+
+function vendorImage(id: string, category: string, index = 0) {
+  const keyword = categoryKeywords[category] || 'wedding'
+  // Use a numeric hash of id+index for consistent images per vendor
+  const lock = id.split('').reduce((acc, c, i) => acc + c.charCodeAt(0) * (i + 1), index * 100) % 10000
+  return `https://loremflickr.com/400/300/${keyword}?lock=${lock}`
 }
 
 function useSaved() {
@@ -228,7 +239,7 @@ function VendorListing() {
                       {/* Thumbnail strip */}
                       <div className="flex-shrink-0 flex flex-col gap-1.5">
                         <img
-                          src={vendorImage(vendor.id, 0)}
+                          src={vendorImage(vendor.id, vendor.category, 0)}
                           alt={vendor.name}
                           className="w-36 h-24 rounded-xl object-cover"
                         />
@@ -236,7 +247,7 @@ function VendorListing() {
                           {[1, 2, 3].map(i => (
                             <img
                               key={i}
-                              src={vendorImage(vendor.id, i)}
+                              src={vendorImage(vendor.id, vendor.category, i)}
                               alt=""
                               className="w-[43px] h-[30px] rounded-md object-cover"
                             />
