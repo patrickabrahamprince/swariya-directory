@@ -47,6 +47,7 @@ export async function getVendors(filters?: {
   category?: string
   minRating?: number
   featuredOnly?: boolean
+  search?: string
 }) {
   let query = supabase
     .from('vendors')
@@ -59,6 +60,7 @@ export async function getVendors(filters?: {
   if (filters?.category) query = query.eq('category', filters.category)
   if (filters?.minRating) query = query.gte('rating', filters.minRating)
   if (filters?.featuredOnly) query = query.eq('featured', true)
+  if (filters?.search) query = query.ilike('name', `%${filters.search}%`)
 
   const { data, error } = await query
   if (error) throw error

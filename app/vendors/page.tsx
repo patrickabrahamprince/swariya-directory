@@ -1,11 +1,16 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { getVendors, type Vendor } from '@/lib/supabase'
 
 const cities = ['bangalore', 'mumbai', 'delhi', 'hyderabad', 'pune']
 const categories = ['venues', 'catering', 'photography', 'decoration', 'entertainment']
+
+function vendorImage(id: string, index = 0) {
+  return `https://picsum.photos/seed/${id}-${index}/400/300`
+}
 
 function useSaved() {
   const [saved, setSaved] = useState<Set<string>>(() => {
@@ -30,10 +35,12 @@ function VendorListing() {
   const [error, setError] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
   const { saved, toggle } = useSaved()
+  const [searchInput, setSearchInput] = useState('')
   const [filters, setFilters] = useState({
     city: searchParams.get('city') || 'bangalore',
     category: searchParams.get('category') || 'venues',
     minRating: 0,
+    search: '',
   })
 
   const showToast = (msg: string) => {
@@ -60,6 +67,10 @@ function VendorListing() {
 
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
+  const handleSearch = () => {
+    setFilters(f => ({ ...f, search: searchInput.trim() }))
+  }
+
   return (
     <main className="max-w-7xl mx-auto px-6 py-10">
       {/* Toast */}
@@ -68,12 +79,36 @@ function VendorListing() {
           {toast}
         </div>
       )}
+
       {/* Page title */}
-      <div className="mb-8">
+      <div className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-widest text-brand-gray mb-2">Directory</p>
-        <h1 className="text-3xl font-bold text-brand-black">
+        <h1 className="text-3xl font-bold text-brand-black mb-5">
           {cap(filters.category)} in {cap(filters.city)}
         </h1>
+
+        {/* Search bar */}
+        <div className="flex gap-2 max-w-xl">
+          <input
+            type="text"
+            placeholder="Search by vendor name..."
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSearch()}
+            className="input flex-1"
+          />
+          <button onClick={handleSearch} className="btn-primary px-6">
+            Search
+          </button>
+          {filters.search && (
+            <button
+              onClick={() => { setSearchInput(''); setFilters(f => ({ ...f, search: '' })) }}
+              className="btn-secondary px-4"
+            >
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-4 gap-8">
@@ -83,7 +118,7 @@ function VendorListing() {
             <p className="text-xs font-semibold uppercase tracking-widest text-brand-gray">Filters</p>
 
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2">City</label>
+              <label className="block text-sm font-semibold text-brand-black mb-2">City / Location</label>
               <select
                 value={filters.city}
                 onChange={(e) => setFilters({ ...filters, city: e.target.value })}
@@ -121,6 +156,16 @@ function VendorListing() {
                 <span>Any</span><span>5 ⭐</span>
               </div>
             </div>
+
+            <button
+              onClick={() => {
+                setSearchInput('')
+                setFilters({ city: 'bangalore', category: 'venues', minRating: 0, search: '' })
+              }}
+              className="btn-secondary w-full text-sm"
+            >
+              Reset Filters
+            </button>
           </div>
         </aside>
 
@@ -159,9 +204,30 @@ function VendorListing() {
                 {vendors.map(vendor => (
                   <div key={vendor.id} className="card-hover p-6">
                     <div className="flex gap-5">
-                      {/* Thumbnail */}
-                      <div className="w-36 h-28 bg-brand-light rounded-xl flex-shrink-0 flex items-center justify-center text-brand-gray text-xs">
-                        Photo
+                      {/* Thumbnail strip */}
+                      <div className="flex-shrink-0 flex flex-col gap-1.5">
+                        <div className="w-36 h-24 rounded-xl overflow-hidden relative">
+                          <Image
+                            src={vendorImage(vendor.id, 0)}
+                            alt={vendor.name}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                        <div className="flex gap-1.5">
+                          {[1, 2, 3].map(i => (
+                            <div key={i} className="w-[43px] h-[30px] rounded-md overflow-hidden relative">
+                              <Image
+                                src={vendorImage(vendor.id, i)}
+                                alt=""
+                                fill
+                                className="object-cover"
+                                unoptimized
+                              />
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
                       {/* Info */}
@@ -170,7 +236,7 @@ function VendorListing() {
                           <div>
                             <h3 className="font-bold text-brand-black text-lg leading-tight">{vendor.name}</h3>
                             <p className="text-xs text-brand-gray mt-0.5">
-                              {cap(vendor.category)} · 📍 {cap(vendor.city)}
+                              {cap(vendor.category)} · 📍 {vendor.address || cap(vendor.city)}
                             </p>
                           </div>
                           {vendor.featured && <span className="badge-gold flex-shrink-0">Featured</span>}
