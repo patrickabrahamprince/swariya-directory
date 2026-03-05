@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { getVendors, type Vendor } from '@/lib/supabase'
@@ -23,7 +23,7 @@ function useSaved() {
   return { saved, toggle }
 }
 
-export default function VendorListing() {
+function VendorListing() {
   const searchParams = useSearchParams()
   const [vendors, setVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
@@ -217,5 +217,13 @@ export default function VendorListing() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function VendorsPage() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-6 py-10 animate-pulse"><div className="h-8 skeleton w-64 mb-8" /></div>}>
+      <VendorListing />
+    </Suspense>
   )
 }
