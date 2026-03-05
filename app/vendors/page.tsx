@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { getVendors, type Vendor } from '@/lib/supabase'
 
@@ -228,26 +227,19 @@ function VendorListing() {
                     <div className="flex gap-5">
                       {/* Thumbnail strip */}
                       <div className="flex-shrink-0 flex flex-col gap-1.5">
-                        <div className="w-36 h-24 rounded-xl overflow-hidden relative">
-                          <Image
-                            src={vendorImage(vendor.id, 0)}
-                            alt={vendor.name}
-                            fill
-                            className="object-cover"
-                            unoptimized
-                          />
-                        </div>
+                        <img
+                          src={vendorImage(vendor.id, 0)}
+                          alt={vendor.name}
+                          className="w-36 h-24 rounded-xl object-cover"
+                        />
                         <div className="flex gap-1.5">
                           {[1, 2, 3].map(i => (
-                            <div key={i} className="w-[43px] h-[30px] rounded-md overflow-hidden relative">
-                              <Image
-                                src={vendorImage(vendor.id, i)}
-                                alt=""
-                                fill
-                                className="object-cover"
-                                unoptimized
-                              />
-                            </div>
+                            <img
+                              key={i}
+                              src={vendorImage(vendor.id, i)}
+                              alt=""
+                              className="w-[43px] h-[30px] rounded-md object-cover"
+                            />
                           ))}
                         </div>
                       </div>

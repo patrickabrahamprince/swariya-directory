@@ -173,7 +173,7 @@ function generateVendor(city, category, index) {
 async function seed() {
   const cities = Object.keys(cityData)
   const categories = ['venues', 'catering', 'photography', 'decoration', 'entertainment']
-  const perCityPerCategory = 8 // 25 cities × 5 categories × 8 = 1000 vendors
+  const perCityPerCategory = 200 // 25 cities × 5 categories × 200 = 25,000 vendors
 
   const vendors = []
   let idx = 0

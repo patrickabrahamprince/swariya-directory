@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { getVendorById, getReviewsByVendor, createReview, type Vendor, type Review } from '@/lib/supabase'
 
 export default function VendorDetail({ params }: { params: { id: string } }) {
@@ -124,26 +123,19 @@ export default function VendorDetail({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-3 gap-8 mb-10">
         {/* Gallery */}
         <div className="col-span-2">
-          <div className="h-80 rounded-2xl overflow-hidden relative mb-3">
-            <Image
-              src={`https://picsum.photos/seed/${params.id}-0/800/500`}
-              alt={name}
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          </div>
+          <img
+            src={`https://picsum.photos/seed/${params.id}-0/800/500`}
+            alt={name}
+            className="w-full h-80 rounded-2xl object-cover mb-3"
+          />
           <div className="grid grid-cols-4 gap-3">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-20 rounded-xl overflow-hidden relative">
-                <Image
-                  src={`https://picsum.photos/seed/${params.id}-${i}/400/300`}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
+              <img
+                key={i}
+                src={`https://picsum.photos/seed/${params.id}-${i}/400/300`}
+                alt=""
+                className="h-20 w-full rounded-xl object-cover"
+              />
             ))}
           </div>
         </div>
