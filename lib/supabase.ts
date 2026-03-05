@@ -42,19 +42,27 @@ export interface Review {
 
 // ─── Vendor queries ───────────────────────────────────────────────────────────
 
+const PAGE_SIZE = 20
+
 export async function getVendors(filters?: {
   city?: string
   category?: string
   minRating?: number
   featuredOnly?: boolean
   search?: string
+  page?: number
 }) {
+  const page = filters?.page ?? 1
+  const from = (page - 1) * PAGE_SIZE
+  const to = from + PAGE_SIZE - 1
+
   let query = supabase
     .from('vendors')
-    .select('*')
+    .select('*', { count: 'exact' })
     .eq('status', 'approved')
     .order('featured', { ascending: false })
     .order('rating', { ascending: false })
+    .range(from, to)
 
   if (filters?.city) query = query.eq('city', filters.city)
   if (filters?.category) query = query.eq('category', filters.category)
@@ -62,9 +70,9 @@ export async function getVendors(filters?: {
   if (filters?.featuredOnly) query = query.eq('featured', true)
   if (filters?.search) query = query.ilike('name', `%${filters.search}%`)
 
-  const { data, error } = await query
+  const { data, error, count } = await query
   if (error) throw error
-  return data as Vendor[]
+  return { vendors: data as Vendor[], total: count ?? 0, pageSize: PAGE_SIZE }
 }
 
 export async function getVendorById(id: string) {

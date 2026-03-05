@@ -37,6 +37,9 @@ function useSaved() {
 function VendorListing() {
   const searchParams = useSearchParams()
   const [vendors, setVendors] = useState<Vendor[]>([])
+  const [total, setTotal] = useState(0)
+  const [pageSize, setPageSize] = useState(20)
+  const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
@@ -49,6 +52,8 @@ function VendorListing() {
     search: '',
   })
 
+  const totalPages = Math.ceil(total / pageSize)
+
   const showToast = (msg: string) => {
     setToast(msg)
     setTimeout(() => setToast(null), 2500)
@@ -59,8 +64,10 @@ function VendorListing() {
       setLoading(true)
       setError(null)
       try {
-        const data = await getVendors(filters)
-        setVendors(data)
+        const result = await getVendors({ ...filters, page })
+        setVendors(result.vendors)
+        setTotal(result.total)
+        setPageSize(result.pageSize)
       } catch (err) {
         setError('Failed to load vendors.')
         console.error(err)
@@ -69,12 +76,18 @@ function VendorListing() {
       }
     }
     fetchVendors()
-  }, [filters])
+  }, [filters, page])
 
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
   const handleSearch = () => {
+    setPage(1)
     setFilters(f => ({ ...f, search: searchInput.trim() }))
+  }
+
+  const goToPage = (p: number) => {
+    setPage(p)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -127,7 +140,7 @@ function VendorListing() {
               <label className="block text-sm font-semibold text-brand-black mb-2">City / Location</label>
               <select
                 value={filters.city}
-                onChange={(e) => setFilters({ ...filters, city: e.target.value })}
+                onChange={(e) => { setPage(1); setFilters({ ...filters, city: e.target.value }) }}
                 className="input"
               >
                 {cities.map(c => <option key={c} value={c}>{cap(c)}</option>)}
@@ -138,7 +151,7 @@ function VendorListing() {
               <label className="block text-sm font-semibold text-brand-black mb-2">Category</label>
               <select
                 value={filters.category}
-                onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+                onChange={(e) => { setPage(1); setFilters({ ...filters, category: e.target.value }) }}
                 className="input"
               >
                 {categories.map(c => <option key={c} value={c}>{cap(c)}</option>)}
@@ -166,6 +179,7 @@ function VendorListing() {
             <button
               onClick={() => {
                 setSearchInput('')
+                setPage(1)
                 setFilters({ city: 'bangalore', category: 'venues', minRating: 0, search: '' })
               }}
               className="btn-secondary w-full text-sm"
@@ -205,7 +219,9 @@ function VendorListing() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-brand-gray mb-4">{vendors.length} vendors found</p>
+              <p className="text-sm text-brand-gray mb-4">
+                {total.toLocaleString()} vendors found · page {page} of {totalPages}
+              </p>
               <div className="space-y-4">
                 {vendors.map(vendor => (
                   <div key={vendor.id} className="card-hover p-6">
@@ -284,6 +300,53 @@ function VendorListing() {
                   </div>
                 ))}
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-10">
+                  <button
+                    onClick={() => goToPage(page - 1)}
+                    disabled={page === 1}
+                    className="btn-secondary py-2 px-4 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    ← Prev
+                  </button>
+
+                  {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+                    let p: number
+                    if (totalPages <= 7) {
+                      p = i + 1
+                    } else if (page <= 4) {
+                      p = i + 1
+                    } else if (page >= totalPages - 3) {
+                      p = totalPages - 6 + i
+                    } else {
+                      p = page - 3 + i
+                    }
+                    return (
+                      <button
+                        key={p}
+                        onClick={() => goToPage(p)}
+                        className={`w-9 h-9 rounded-full text-sm font-semibold transition-all ${
+                          p === page
+                            ? 'bg-brand-black text-white'
+                            : 'bg-transparent text-brand-gray hover:text-brand-black border border-brand-border hover:border-brand-black'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  })}
+
+                  <button
+                    onClick={() => goToPage(page + 1)}
+                    disabled={page === totalPages}
+                    className="btn-secondary py-2 px-4 text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>
