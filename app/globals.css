@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  background: #ffffff;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Cards ──────────────────────────────────────────── */
+.card {
+  @apply bg-white border border-brand-border rounded-2xl;
+}
+
+.card-hover {
+  @apply card transition-all duration-300 hover:shadow-[0_8px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5;
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-6 py-3 bg-brand-black text-white text-sm font-semibold rounded-full transition-all duration-200 hover:bg-[#333] active:scale-95;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center px-6 py-3 bg-transparent text-brand-black text-sm font-semibold rounded-full border border-brand-border transition-all duration-200 hover:border-brand-black active:scale-95;
+}
+
+/* ── Badges ──────────────────────────────────────────── */
+.badge-gold {
+  @apply inline-block px-3 py-1 text-xs font-semibold rounded-full bg-brand-gold text-white;
+}
+
+.badge-pending {
+  @apply inline-block px-3 py-1 text-xs font-semibold rounded-full bg-amber-50 text-amber-700 border border-amber-200;
+}
+
+.badge-approved {
+  @apply inline-block px-3 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200;
+}
+
+.badge-rejected {
+  @apply inline-block px-3 py-1 text-xs font-semibold rounded-full bg-red-50 text-red-600 border border-red-200;
+}
+
+/* ── Form inputs ─────────────────────────────────────── */
+.input {
+  @apply w-full px-4 py-3 bg-brand-light border border-brand-border rounded-xl text-sm font-medium placeholder:text-brand-gray focus:outline-none focus:border-brand-black transition-colors;
+}
+
+/* ── Loading skeleton ────────────────────────────────── */
+.skeleton {
+  @apply bg-brand-light rounded-xl animate-pulse;
+}
+
+/* ── Legacy compat (keep for pages not yet redesigned) ── */
+.gradient-text {
+  @apply text-brand-black;
+}

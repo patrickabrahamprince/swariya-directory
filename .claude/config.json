@@ -1,0 +1,13 @@
+{
+  "projectName": "Swariya Wedding Directory",
+  "description": "SEO-focused wedding vendor directory with Next.js",
+  "technologies": ["Next.js 14", "React 18", "TypeScript", "Tailwind CSS", "Supabase"],
+  "objectives": [
+    "Build SEO-optimized wedding vendor directory",
+    "Implement vendor search and filtering",
+    "Create review and rating system",
+    "Build admin panel for vendor management",
+    "Setup Supabase database integration",
+    "Deploy to Vercel"
+  ]
+}
