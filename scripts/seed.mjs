@@ -10,26 +10,31 @@ const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 const randFloat = (min, max) => parseFloat((Math.random() * (max - min) + min).toFixed(1))
 
 const cityData = {
-  bangalore: {
-    areas: ['Indiranagar', 'Koramangala', 'Whitefield', 'Hebbal', 'JP Nagar', 'Jayanagar', 'Marathahalli', 'HSR Layout', 'Electronic City', 'Malleshwaram', 'Rajajinagar', 'Bannerghatta Road', 'Sarjapur Road', 'BTM Layout', 'Yelahanka'],
-    phone_prefix: '+91 98',
-  },
-  mumbai: {
-    areas: ['Bandra', 'Andheri', 'Juhu', 'Powai', 'Borivali', 'Thane', 'Navi Mumbai', 'Goregaon', 'Malad', 'Dadar', 'Versova', 'Ghatkopar', 'Mulund', 'Kandivali', 'Kurla'],
-    phone_prefix: '+91 99',
-  },
-  delhi: {
-    areas: ['Connaught Place', 'South Extension', 'Vasant Kunj', 'Janakpuri', 'Rohini', 'Dwarka', 'Lajpat Nagar', 'Pitampura', 'Karol Bagh', 'Defence Colony', 'Saket', 'Noida', 'Gurugram', 'Faridabad', 'Greater Noida'],
-    phone_prefix: '+91 98',
-  },
-  hyderabad: {
-    areas: ['Banjara Hills', 'Jubilee Hills', 'Madhapur', 'Kondapur', 'Miyapur', 'KPHB Colony', 'Secunderabad', 'Dilsukhnagar', 'Old City', 'Shamshabad', 'Nanakramguda', 'Gachibowli', 'Kukatpally', 'Himayatnagar', 'Begumpet'],
-    phone_prefix: '+91 98',
-  },
-  pune: {
-    areas: ['Koregaon Park', 'Viman Nagar', 'Aundh', 'Hinjewadi', 'Wakad', 'Kothrud', 'Pimpri', 'Shivajinagar', 'Hadapsar', 'Bavdhan', 'Camp', 'Deccan', 'Baner', 'Kalyani Nagar', 'Magarpatta'],
-    phone_prefix: '+91 98',
-  },
+  bangalore: { areas: ['Indiranagar', 'Koramangala', 'Whitefield', 'Hebbal', 'JP Nagar', 'Jayanagar', 'Marathahalli', 'HSR Layout', 'Electronic City', 'Malleshwaram'], phone_prefix: '+91 98' },
+  mumbai: { areas: ['Bandra', 'Andheri', 'Juhu', 'Powai', 'Borivali', 'Thane', 'Navi Mumbai', 'Goregaon', 'Malad', 'Dadar'], phone_prefix: '+91 99' },
+  delhi: { areas: ['Connaught Place', 'South Extension', 'Vasant Kunj', 'Janakpuri', 'Rohini', 'Dwarka', 'Lajpat Nagar', 'Pitampura', 'Karol Bagh', 'Defence Colony'], phone_prefix: '+91 98' },
+  hyderabad: { areas: ['Banjara Hills', 'Jubilee Hills', 'Madhapur', 'Kondapur', 'Miyapur', 'KPHB Colony', 'Secunderabad', 'Dilsukhnagar', 'Gachibowli', 'Begumpet'], phone_prefix: '+91 98' },
+  pune: { areas: ['Koregaon Park', 'Viman Nagar', 'Aundh', 'Hinjewadi', 'Wakad', 'Kothrud', 'Pimpri', 'Shivajinagar', 'Hadapsar', 'Baner'], phone_prefix: '+91 98' },
+  chennai: { areas: ['Anna Nagar', 'T Nagar', 'Adyar', 'Velachery', 'Nungambakkam', 'Mylapore', 'Tambaram', 'Porur', 'Perambur', 'Guindy'], phone_prefix: '+91 98' },
+  kolkata: { areas: ['Park Street', 'Salt Lake', 'New Town', 'Ballygunge', 'Alipore', 'Dumdum', 'Behala', 'Howrah', 'Gariahat', 'Kasba'], phone_prefix: '+91 98' },
+  ahmedabad: { areas: ['Navrangpura', 'Vastrapur', 'Satellite', 'Bodakdev', 'Prahlad Nagar', 'Maninagar', 'Gota', 'SG Highway', 'Thaltej', 'Chandkheda'], phone_prefix: '+91 98' },
+  jaipur: { areas: ['C-Scheme', 'Vaishali Nagar', 'Malviya Nagar', 'Tonk Road', 'Jagatpura', 'Mansarovar', 'Civil Lines', 'Bani Park', 'Sanganer', 'Sitapura'], phone_prefix: '+91 98' },
+  chandigarh: { areas: ['Sector 17', 'Sector 22', 'Sector 35', 'Panchkula', 'Mohali', 'Phase 7', 'Phase 10', 'Sector 8', 'Sector 26', 'Manimajra'], phone_prefix: '+91 98' },
+  goa: { areas: ['Panaji', 'Calangute', 'Candolim', 'Anjuna', 'Mapusa', 'Ponda', 'Margao', 'Vasco', 'Vagator', 'Arpora'], phone_prefix: '+91 98' },
+  kochi: { areas: ['Ernakulam', 'Kakkanad', 'Marine Drive', 'Aluva', 'Thrippunithura', 'Edapally', 'Vyttila', 'Palarivattom', 'Kaloor', 'Panampilly Nagar'], phone_prefix: '+91 98' },
+  lucknow: { areas: ['Hazratganj', 'Gomti Nagar', 'Alambagh', 'Indira Nagar', 'Chinhat', 'Vibhuti Khand', 'Aliganj', 'Charbagh', 'Lalbagh', 'Mahanagar'], phone_prefix: '+91 98' },
+  bhopal: { areas: ['MP Nagar', 'Arera Colony', 'Kolar Road', 'Hoshangabad Road', 'Gulmohar', 'Shahpura', 'Bawadia Kalan', 'New Market', 'TT Nagar', 'Shyamla Hills'], phone_prefix: '+91 98' },
+  indore: { areas: ['Vijay Nagar', 'Palasia', 'Bhawarkuan', 'Rajwada', 'Rau', 'Lasudia', 'Bicholi Hapsi', 'Scheme 54', 'MG Road', 'AB Road'], phone_prefix: '+91 98' },
+  nagpur: { areas: ['Dharampeth', 'Sadar', 'Sitabuldi', 'Manish Nagar', 'Trimurti Nagar', 'Pratap Nagar', 'Ramdaspeth', 'Civil Lines', 'Hingna Road', 'Wardha Road'], phone_prefix: '+91 98' },
+  surat: { areas: ['Athwa', 'Adajan', 'Vesu', 'Citylight', 'Katargam', 'Varachha', 'Althan', 'Pal', 'Udhna', 'Rander'], phone_prefix: '+91 98' },
+  vadodara: { areas: ['Alkapuri', 'Fatehgunj', 'Gotri', 'Sayajigunj', 'Manjalpur', 'Subhanpura', 'Waghodia Road', 'Race Course', 'Makarpura', 'Harni'], phone_prefix: '+91 98' },
+  coimbatore: { areas: ['RS Puram', 'Peelamedu', 'Gandhipuram', 'Singanallur', 'Saibaba Colony', 'Ramanathapuram', 'Ukkadam', 'Vadavalli', 'Kovaipudur', 'Pollachi Road'], phone_prefix: '+91 98' },
+  visakhapatnam: { areas: ['Dwaraka Nagar', 'MVP Colony', 'Gajuwaka', 'Vizag Steel', 'Maddilapalem', 'Seethammadhara', 'Waltair', 'Rushikonda', 'Bheemunipatnam', 'Pendurthi'], phone_prefix: '+91 98' },
+  agra: { areas: ['Taj Ganj', 'Civil Lines', 'Kamla Nagar', 'Sikandra', 'Shahganj', 'Bodla', 'Dayalbagh', 'Belanganj', 'Sanjay Place', 'Fatehabad Road'], phone_prefix: '+91 98' },
+  amritsar: { areas: ['Lawrence Road', 'Ranjit Avenue', 'Green Avenue', 'Model Town', 'Majitha Road', 'GT Road', 'Queens Road', 'Sultanwind', 'Batala Road', 'Mall Road'], phone_prefix: '+91 98' },
+  jodhpur: { areas: ['Ratanada', 'Shastri Nagar', 'Sardarpura', 'Pal Road', 'Bhati Circle', 'Basni', 'Chopasni Housing Board', 'Pratap Nagar', 'Circuit House', 'Sojati Gate'], phone_prefix: '+91 98' },
+  udaipur: { areas: ['Hiran Magri', 'Sector 11', 'Fatehpura', 'Madhuban', 'Sukhadia Circle', 'Chetak Circle', 'Udaipole', 'Bhatiyani Chohatta', 'Ambamata', 'Shobhagpura'], phone_prefix: '+91 98' },
+  mysore: { areas: ['Saraswathipuram', 'Jayalakshmipuram', 'Gokulam', 'Vijayanagar', 'Kuvempunagar', 'Hebbal', 'Nazarbad', 'Bogadi', 'Ittige Gudu', 'Mandi Mohalla'], phone_prefix: '+91 98' },
 }
 
 const templates = {
@@ -166,9 +171,9 @@ function generateVendor(city, category, index) {
 }
 
 async function seed() {
-  const cities = ['bangalore', 'mumbai', 'delhi', 'hyderabad', 'pune']
+  const cities = Object.keys(cityData)
   const categories = ['venues', 'catering', 'photography', 'decoration', 'entertainment']
-  const perCityPerCategory = 40 // 5 cities × 5 categories × 40 = 1000 vendors
+  const perCityPerCategory = 8 // 25 cities × 5 categories × 8 = 1000 vendors
 
   const vendors = []
   let idx = 0

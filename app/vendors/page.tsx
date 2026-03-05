@@ -5,7 +5,13 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { getVendors, type Vendor } from '@/lib/supabase'
 
-const cities = ['bangalore', 'mumbai', 'delhi', 'hyderabad', 'pune']
+const cities = [
+  'bangalore', 'mumbai', 'delhi', 'hyderabad', 'pune',
+  'chennai', 'kolkata', 'ahmedabad', 'jaipur', 'chandigarh',
+  'goa', 'kochi', 'lucknow', 'bhopal', 'indore',
+  'nagpur', 'surat', 'vadodara', 'coimbatore', 'visakhapatnam',
+  'agra', 'amritsar', 'jodhpur', 'udaipur', 'mysore',
+]
 const categories = ['venues', 'catering', 'photography', 'decoration', 'entertainment']
 
 function vendorImage(id: string, index = 0) {
