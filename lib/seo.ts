@@ -32,7 +32,7 @@ export const generateSchema = (vendor: any) => {
 }
 
 export const generateSitemap = (vendors: any[]) => {
-  const urls = [
+  const urls: { url: string; priority: number; lastmod?: string }[] = [
     { url: '/', priority: 1.0 },
     { url: '/vendors', priority: 0.9 },
   ]
